@@ -59,7 +59,10 @@ int main(int argc, char *argv[])
     char *f_val = NULL;
     char *m_val = NULL;
 
-    parse_args(argc, argv, &f_val, &m_val);
+    if(parse_args(argc, argv, &f_val, &m_val) == -1)
+    {
+        exit(EXIT_FAILURE);
+    }
 
     if(f_val != NULL && m_val != NULL)
     {

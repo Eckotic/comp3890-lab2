@@ -25,7 +25,7 @@ static void signal_handler(int sig)
 {
     if(sig == SIGINT)
     {
-        printf("\nExiting 'gracefully'...\n");
+        printf("\nExiting 'gracefully'...");
         exiting = 1;
     }
 }
@@ -75,6 +75,10 @@ void *client_request(void *infoArg)
             }
             break;
         case 'n':
+            for(size_t i = 0; i < length; i++)
+            {
+                newBuffer[i] = info->buffer[i];
+            }
             break;
         default:
             display("ERROR: INVALID FILTER\n");
