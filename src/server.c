@@ -25,7 +25,7 @@ static void signal_handler(int sig)
 {
     if(sig == SIGINT)
     {
-        printf("\nExiting 'gracefully'...");
+        printf("\nExiting 'gracefully'...\n");
         exiting = 1;
     }
 }
