@@ -16,7 +16,6 @@ static volatile sig_atomic_t exiting = 0;    // NOLINT(cppcoreguidelines-avoid-n
 
 struct info
 {
-    int    inFD;
     int    outFD;
     size_t length;
     char   buffer[BUFFERSIZE];
@@ -26,8 +25,8 @@ static void signal_handler(int sig)
 {
     if(sig == SIGINT)
     {
+        printf("\nExiting 'gracefully'...\n");
         exiting = 1;
-        printf("\nExiting 'gracefully'...");
     }
 }
 
@@ -56,19 +55,11 @@ void *client_request(void *infoArg)
 {
     const struct info *info   = (struct info *)infoArg;
     size_t             length = info->length;
-    int                inFD   = info->inFD;
     int                outFD  = info->outFD;
     char               newBuffer[BUFFERSIZE];
     char               c;
 
-    printf("GOT INFO FROM STRUCT\n");
-    printf("INPUT:%d\n", inFD);
-    printf("OUTPUT:%d\n", outFD);
-    printf("LENGTH:%zu\n", length);
-    printf("buffer:%s\n", info->buffer);
-
     c = info->buffer[length];    // gets the filter character
-    printf("filter:%c\n", c);
     switch(c)
     {
         case 'u':
@@ -102,10 +93,8 @@ int main(void)
 
     setup_signals();
 
-    display("CODE IS FUCKING RUNNING");
     if(input != -1 && output != -1)
     {
-        printf("INPUT: %d\nOUTPUT: %d\n", input, output);
         while(!exiting)
         {
             if(read(input, &c, sizeof(char)) > 0)    // only run if there is a char detected
@@ -145,7 +134,6 @@ int main(void)
                     if(infoPtr != NULL)
                     {
                         read(input, infoPtr->buffer, sizeof(char) * BUFFERSIZE);
-                        infoPtr->inFD   = input;
                         infoPtr->outFD  = output;
                         infoPtr->length = length;
                         pthread_create(&thread, NULL, client_request, (void *)infoPtr);
