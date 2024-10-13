@@ -43,11 +43,13 @@ static int parse_args(int argc, char *argv[], char **f_val, char **m_val)
                 break;
             default:
                 printf("ERROR: INVALID ARGUMENT\n");
+                return -1;
         }
     }
     if(*f_val == NULL || (strcmp(*f_val, "l") != 0 && strcmp(*f_val, "u") != 0 && strcmp(*f_val, "n") != 0))
     {
         printf("ERROR: INVALID FILTER\n");
+        return -1;
     }
     return 1;
 }
